@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/mnt/c/Users/Lenovo ThinkPad/PythonDirectory/rsgoosebot/bot_venv/bin/python3.8" "$0" "$@"
+'''exec' "/mnt/c/Users/Lenovo ThinkPad/PythonDirectory/RS_goosebot/bot_venv/bin/python3.8" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

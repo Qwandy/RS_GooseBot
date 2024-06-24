@@ -52,9 +52,34 @@ def insert_team_data(tblname, user_id, username, role_id, rolename):
     cur.execute(f"INSERT INTO team_data (user_id, name, role_id, role_name, board_position) \
     VALUES ('{user_id}', '{username}', '{role_id}', '{rolename}', '0');")
 
-    for row in cur.execute("SELECT user_id, name, role_id, role_name, board_position FROM team_data"):
+    con.commit()
+
+def update_team_data(tblname, rolename, pts):
+
+    # testing inserting and viewing data
+    con = sqlite3.connect(tblname)
+    cur = con.cursor()
+    cur.execute(f"UPDATE team_data \
+                SET board_position = board_position + {pts} \
+                    WHERE role_name = '{rolename}'")
+    con.commit()
+
+def show_leaderboard(tblname):
+
+    teams = []
+    scores = []
+    con = sqlite3.connect(tblname)
+    cur = con.cursor()
+    for row in cur.execute(f"SELECT role_name, board_position FROM team_data \
+                            GROUP BY board_position \
+                           ORDER BY board_position DESC;"):
+        
+        teams.append(row[0])
+        scores.append(row[1])
+
         print(row)
 
+    return teams, scores
 # initialises the bot and connects it to discord
 bot = discord.Bot()
 
@@ -128,6 +153,32 @@ class RSGooseBot():
 
                 await ctx.respond("Hello! You have successfully created an instance of a goose game!.", embed=embed)
 
+
+    @game.command()
+    async def update_game(ctx, role_name, pts):
+        update_team_data('team_data.db', role_name, pts)
+
+        for row in cur.execute("SELECT user_id, name, role_id, role_name, board_position FROM team_data"):
+            print(row)
+        await ctx.respond(f"Hello! You have successfully updated {role_name}'s position on the board by {pts}")
+
+    @game.command()
+    async def leaderboard(ctx):
+
+        teams, scores = show_leaderboard("team_data.db")
+
+        embed = discord.Embed(
+                title="Goose Game Leaderboard",
+                description = "Current leaderboard",
+                color = discord.Color.blurple())
+
+        for i in range(len(teams)):
+            embed.add_field(name="", value = f"**{teams[i]}: {scores[i]}**", inline = False)
+
+        embed.set_footer(text="Footer")
+        embed.set_author(name="McQwandy")
+
+        await ctx.respond(f"Hello! The current leaderboard is: ", embed = embed)
 if __name__ == "__main__":
     
     dotenv.load_dotenv() # loads dotenv data into code
@@ -149,6 +200,7 @@ if __name__ == "__main__":
     cur = con.cursor()
 
     insert_team_data("team_data.db", "1234", "qwandy", "2345", "gigachad")
+    insert_team_data("team_data.db", "11234", "dude mcc00l", "2345", "gigachad")
     insert_team_data("team_data.db", "2345", "lyra", "2345", "gigachadess")
 
     for row in cur.execute("SELECT user_id, name, role_id, role_name, board_position FROM team_data"):

@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/mnt/c/Users/Lenovo ThinkPad/PythonDirectory/rsgoosebot/bot_venv"
+set -gx VIRTUAL_ENV "/mnt/c/Users/Lenovo ThinkPad/PythonDirectory/RS_goosebot/bot_venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
