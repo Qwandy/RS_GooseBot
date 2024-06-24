@@ -25,3 +25,5 @@ A discord bot to aid with running clan goose game events
 - /text hello: greets the user
 - /text flax: uses the user's name for a joke and embeds a gif in the text channel
 - /create_game: reads in data from a text file to generate an embed of various tasks for the goose game.
+- /update_game(role_name, integer): increases a role's (teams) points by the integer provided.
+- /leaderboard: Provides an embed in the text channel with each team's position in the goose game.
