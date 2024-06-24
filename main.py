@@ -180,6 +180,9 @@ class RSGooseBot():
         '''
         Updates the state of the game for a team
         '''
+        
+        df = create_task_data('tasks.txt')
+
 
 
         update_team_data('team_data.db', role_name, pts)
@@ -193,9 +196,9 @@ class RSGooseBot():
 
         #for row in cur.execute("SELECT user_id, name, role_id, role_name, board_position FROM team_data"):
             #print(row)
-
+        current_task = df["Task"].iloc[current_pts[0]-1]
         # await for asynchronous function
-        await ctx.respond(f"Hello! You have successfully updated {role_name}'s position on the board by {pts}. Your current position is {current_pts[0]}.")
+        await ctx.respond(f"Hello! You have successfully updated {role_name}'s position on the board by {pts}. Your current position is **{current_pts[0]}**. Your new task is **{current_task}**.")
 
     @game.command()
     async def leaderboard(ctx):
