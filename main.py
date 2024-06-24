@@ -157,10 +157,17 @@ class RSGooseBot():
     @game.command()
     async def update_game(ctx, role_name, pts):
         update_team_data('team_data.db', role_name, pts)
+        
+        current_pts = None
+        con = sqlite3.connect('team_data.db')
+        cur = con.cursor()
+        for row in cur.execute(f"SELECT DISTINCT board_position FROM team_data \
+                    WHERE role_name = '{role_name}'"):
+            current_pts = row
 
-        for row in cur.execute("SELECT user_id, name, role_id, role_name, board_position FROM team_data"):
-            print(row)
-        await ctx.respond(f"Hello! You have successfully updated {role_name}'s position on the board by {pts}")
+        #for row in cur.execute("SELECT user_id, name, role_id, role_name, board_position FROM team_data"):
+            #print(row)
+        await ctx.respond(f"Hello! You have successfully updated {role_name}'s position on the board by {pts}. Your current position is {current_pts[0]}.")
 
     @game.command()
     async def leaderboard(ctx):
